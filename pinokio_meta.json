@@ -6,7 +6,7 @@
     ""
   ],
   "links": [{
-    "title": "asfdasfasefsadf (Wrote the launcher)",
+    "title": "SUP3RMASS1VE (Wrote the launcher)",
     "links": [{
       "type": "bitcoin",
       "value": "1N942jHr6vVuR2KAe2JEf3nN59eR21tpKv"
@@ -19,6 +19,12 @@
     }, {
       "title": "Discord",
       "value": "https://discord.gg/mvDcrA57AQ"
-    }]
-  }]
+        }
+      ]
+    },
+    {
+      "title": "asfdasfasefsadf (wrote the launcher)",
+      "links": []
+    }
+  ]
 }
