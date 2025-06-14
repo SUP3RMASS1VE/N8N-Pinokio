@@ -12,32 +12,80 @@ module.exports = {
         ]
       }
     },
-    // Step 2: Install Node.js dependencies using pnpm install with --force to bypass engine check
+    // Step 2: Download Node.js 22.16+ directly
+    {
+      method: "shell.run",
+      params: {
+        message: [ 
+          "echo Current Node.js version (Pinokio's):",
+          "node --version",
+          "echo Downloading Node.js 22.16.0 for n8n installation...",
+          "mkdir temp_nodejs",
+          "powershell -Command \"Invoke-WebRequest -Uri 'https://nodejs.org/dist/v22.16.0/node-v22.16.0-win-x64.zip' -OutFile 'temp_nodejs/nodejs.zip'\"",
+          "powershell -Command \"Expand-Archive -Path 'temp_nodejs/nodejs.zip' -DestinationPath 'temp_nodejs' -Force\"",
+          "echo Node.js 22.16.0 downloaded and extracted"
+        ]
+      }
+    },
+    // Step 3: Verify downloaded Node.js version
+    {
+      method: "shell.run",
+      params: {
+        message: [ 
+          "echo Verifying downloaded Node.js version:",
+          "temp_nodejs\\node-v22.16.0-win-x64\\node.exe --version"
+        ]
+      }
+    },
+    // Step 4: Install pnpm using the downloaded Node.js
     {
       method: "shell.run",
       params: {
         path: "app",
         message: [ 
-          "echo Installing n8n dependencies using pnpm (bypassing engine check)...",
-          "pnpm install --force" // Use --force to bypass Node.js version check
+          "echo Installing pnpm using Node.js 22.16.0...",
+          "..\\temp_nodejs\\node-v22.16.0-win-x64\\npm.cmd install -g pnpm"
         ]
       }
     },
-    // Step 3: Build the n8n application
+    // Step 5: Install Node.js dependencies using the downloaded Node.js directly
     {
       method: "shell.run",
       params: {
         path: "app",
-        env: { // Add env here
+        message: [ 
+          "echo Installing n8n dependencies using Node.js 22.16.0 directly...",
+          "..\\temp_nodejs\\node-v22.16.0-win-x64\\node.exe --version",
+          "..\\temp_nodejs\\node-v22.16.0-win-x64\\npx.cmd pnpm install"
+        ]
+      }
+    },
+    // Step 6: Build the n8n application using the downloaded Node.js directly
+    {
+      method: "shell.run",
+      params: {
+        path: "app",
+        env: {
           TURBO_TELEMETRY_DISABLED: "1" // Disable turbo telemetry
         },
         message: [ 
-           "echo Building n8n (this might also take a while)...",
-           "npm run build" // npm run build still uses turbo internally
+           "echo Building n8n with Node.js 22.16.0 directly (this might also take a while)...",
+           "..\\temp_nodejs\\node-v22.16.0-win-x64\\node.exe --version",
+           "..\\temp_nodejs\\node-v22.16.0-win-x64\\npx.cmd npm run build"
         ]
       }
     },
-    // Step 4: Log success
+    // Step 7: Cleanup temporary Node.js files
+    {
+      method: "shell.run",
+      params: {
+        message: [ 
+          "echo Cleaning up temporary Node.js files...",
+          "rmdir /s /q temp_nodejs"
+        ]
+      }
+    },
+    // Step 8: Log success
     {
       method: "log",
       params: {

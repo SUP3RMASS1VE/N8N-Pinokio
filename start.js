@@ -8,6 +8,7 @@ module.exports = {
       params: {
         path: "app",
         env: {
+          N8N_RUNNERS_ENABLED: "true"
           // Example: N8N_PORT: "5678"
         },
         message: [ 
