@@ -1,30 +1,35 @@
-﻿// start.js
-// Script to start the n8n application server.
 module.exports = {
+  version: "4.0",
   daemon: true,
   run: [
+    {
+      method: "log",
+      params: {
+        raw: "Starting n8n workflow automation platform..."
+      }
+    },
+    // Start n8n server with task runners enabled
     {
       method: "shell.run",
       params: {
         path: "app",
+        message: "n8n start",
         env: {
-          N8N_RUNNERS_ENABLED: "true"
-          // Example: N8N_PORT: "5678"
+          "N8N_RUNNERS_ENABLED": "true"
         },
-        message: [ 
-            "echo Starting n8n server...",
-            "npm start" // Use npm start, as defined in package.json
-        ],
-        on: [{
-          "event": "/Press.*open in Browser/",
-          "done": true
-        }, {
-          "event": "/error|fail/i", 
-          "done": false,
-           "message": "Potential error detected in n8n startup: {{self.event[0]}}"
-        }]
+        on: [
+          {
+            event: "/Editor is now accessible via:/",
+            done: true
+          },
+          {
+            event: "/http:\/\/localhost:[0-9]+/",
+            done: true
+          }
+        ]
       }
     },
+    // Set the local URL for the UI
     {
       method: "local.set",
       params: {
@@ -32,15 +37,9 @@ module.exports = {
       }
     },
     {
-      method: "browser.open",
-      params: {
-        url: "{{local.url}}"
-      }
-    },
-    {
       method: "log",
       params: {
-        message: "n8n server started and opened in browser. UI should be accessible at {{local.url}}"
+        raw: "n8n is now running at {{local.url}}"
       }
     }
   ]
