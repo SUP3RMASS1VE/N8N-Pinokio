@@ -1,7 +1,7 @@
 const path = require("path")
 
 module.exports = {
-  version: "4.0",
+  version: "3.7",
   title: "n8n",
   description: "Secure Workflow Automation for Technical Teams",
   icon: "icon.png",
