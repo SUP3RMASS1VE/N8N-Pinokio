@@ -1,5 +1,3 @@
-const path = require("path")
-
 module.exports = {
   version: "3.7",
   title: "n8n",
@@ -22,6 +20,7 @@ module.exports = {
         if (memory && memory.url) {
           return [
             { 
+              default: true,
               icon: "fa-solid fa-rocket", 
               text: "Web UI", 
               href: memory.url 

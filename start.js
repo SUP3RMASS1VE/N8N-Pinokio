@@ -19,11 +19,7 @@ module.exports = {
         },
         on: [
           {
-            event: "/Editor is now accessible via:/",
-            done: true
-          },
-          {
-            event: "/http:\/\/localhost:[0-9]+/",
+            event: "/Editor is now.*(http:\/\/localhost:[0-9]+)/",
             done: true
           }
         ]
@@ -33,7 +29,7 @@ module.exports = {
     {
       method: "local.set",
       params: {
-        url: "http://localhost:5678"
+        url: "{{input.event[1]}}"
       }
     },
     {
